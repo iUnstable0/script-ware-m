@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import { Gradient } from "@/components/gradient";
+import { Gradient } from "@/lib/gradient";
 
 // Styles
 

@@ -2,7 +2,7 @@
 
 // Packages
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Command } from "@tauri-apps/api/shell";
 import { invoke } from "@tauri-apps/api/tauri";
@@ -11,6 +11,7 @@ import { fetch } from "@tauri-apps/api/http";
 import * as fs from "@tauri-apps/api/fs";
 
 import { resolveResource, resourceDir } from "@/lib/path";
+import { Gradient } from "@/lib/gradient";
 
 import lib_config from "@/lib/config";
 
@@ -24,7 +25,8 @@ import { LoaderIcon } from "@/components/loader";
 
 // Styles
 
-import styles from "@/styles/bootstrapper.module.scss";
+import styles from "@/styles/index.module.scss";
+import bootstrapperStyles from "@/styles/bootstrapper.module.scss";
 
 export default function Page() {
   const [debug, setDebug] = useState<string>("");
@@ -325,67 +327,99 @@ export default function Page() {
     });
   };
 
+  useEffect(() => {
+    const gradient: any = new Gradient();
+
+    gradient.initGradient("#gradient-canvas");
+  }, []);
+
+  useEffect(() => {
+    if (loaded) setTimeout(() => void invoke("close_bootstrapper"), 1000);
+  }, [loaded]);
+
   return (
-    <div className={styles.container}>
-      <motion.div
-        className={styles.logo}
-        initial={{
-          top: "50%",
-        }}
-        animate={{
-          top: loaded ? "50%" : "45%",
-        }}
-        transition={{
-          duration: 0.25,
-          delay: 2,
-        }}
-        onAnimationComplete={() => {
-          if (ran) return;
+    <AnimatePresence>
+      {!loaded && (
+        <motion.div
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
+          exit={{
+            opacity: 0,
+          }}
+          transition={{
+            duration: 0.25,
+          }}
+        >
+          <div className={styles["gradient-blur"]} />
+          <canvas className={styles["gradient-canvas"]} id="gradient-canvas" />
 
-          setRan(true);
+          <div className={bootstrapperStyles.container}>
+            <motion.div
+              className={bootstrapperStyles.logo}
+              initial={{
+                top: "50%",
+              }}
+              animate={{
+                // top: loaded ? "50%" : "45%",
+                top: "45%",
+              }}
+              transition={{
+                duration: 0.25,
+                delay: 1,
+              }}
+              onAnimationComplete={() => {
+                if (ran) return;
 
-          init()
-            .then(() => {
-              // setLoaded(true);
-              setTimeout(() => void invoke("close_bootstrapper"), 1000);
-            })
-            .catch(async (error) => {
-              console.error(error);
-              // await exit(1);
-            });
-        }}
-      >
-        <Image
-          src="/logo.svg"
-          // width={150}
-          // height={150}
-          fill
-          alt="Script-Ware logo"
-        />
-      </motion.div>
+                setRan(true);
 
-      <AnimatePresence>
-        {!loaded && (
-          <motion.div
-            className={styles.status}
-            initial={{
-              opacity: 0,
-            }}
-            animate={{
-              opacity: 1,
-            }}
-            exit={{
-              opacity: 0,
-            }}
-            transition={{
-              duration: 0.25,
-              delay: 2,
-            }}
-          >
-            <LoaderIcon size={28} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+                init()
+                  .then(() => {
+                    setLoaded(true);
+                  })
+                  .catch(async (error) => {
+                    console.error(error);
+                    // await exit(1);
+                  });
+              }}
+            >
+              <Image
+                src="/logo.svg"
+                // width={150}
+                // height={150}
+                fill
+                alt="Script-Ware logo"
+              />
+            </motion.div>
+
+            {/*<AnimatePresence>*/}
+            {/*  {!loaded && (*/}
+            <motion.div
+              className={bootstrapperStyles.status}
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              // exit={{
+              //   opacity: 0,
+              // }}
+              transition={{
+                duration: 0.25,
+                delay: 1,
+              }}
+            >
+              <LoaderIcon size={28} />
+            </motion.div>
+            {/*  )}*/}
+            {/*</AnimatePresence>*/}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

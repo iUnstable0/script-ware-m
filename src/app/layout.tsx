@@ -1,16 +1,8 @@
 "use client";
 
-// Packages
-
-import { useEffect } from "react";
-
-import { Gradient } from "@/components/gradient";
-
 // Styles
 
 import "@/styles/globals.scss";
-
-import styles from "@/styles/index.module.scss";
 
 // Fonts
 
@@ -23,12 +15,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  useEffect(() => {
-    const gradient: any = new Gradient();
-
-    gradient.initGradient("#gradient-canvas");
-  }, []);
-
   return (
     <html
       lang="en"
@@ -39,12 +25,7 @@ export default function RootLayout({
         border: "none",
       }}
     >
-      <body className={inter.className}>
-        <div className={styles["gradient-blur"]} />
-        <canvas className={styles["gradient-canvas"]} id="gradient-canvas" />
-
-        {children}
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

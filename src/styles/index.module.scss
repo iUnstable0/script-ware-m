@@ -27,5 +27,13 @@
   border: none;
 
   border-radius: 10px;
+}
 
+.container {
+  width: 100%;
+  height: calc(100vh - 40px);
+
+  box-sizing: border-box; /* Add this line */
+
+  padding: 43px 0px 0px 40px;
 }
