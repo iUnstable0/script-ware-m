@@ -1,6 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use tauri::Manager;
 use tokio::fs::File;
 use tokio::io::AsyncWriteExt;
 use tokio_stream::StreamExt;
@@ -15,7 +16,8 @@ fn main() {
 			extract_dir_from_asar,
 			extract_file_from_asar,
 			get_file_size,
-			download
+			download,
+			close_bootstrapper,
 		])
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application")
@@ -41,6 +43,15 @@ fn main() {
 //
 // 	Ok(contents)
 // }
+
+#[tauri::command]
+async fn close_bootstrapper(window: tauri::Window) {
+	if let Some(bootstrapper) = window.get_window("bootstrapper") {
+		bootstrapper.close().unwrap();
+	}
+	// Show main window
+	window.get_window("main").unwrap().show().unwrap();
+}
 
 #[tauri::command]
 async fn is_writable(path: String) -> std::result::Result<bool, String> {

@@ -6,12 +6,15 @@ import { useState } from "react";
 
 import { Command, open } from "@tauri-apps/api/shell";
 import { invoke } from "@tauri-apps/api/tauri";
-import { exit } from "@tauri-apps/api/process";
-import { fetch, ResponseType } from "@tauri-apps/api/http";
+// import { exit } from "@tauri-apps/api/process";
+// import { appWindow } from "@tauri-apps/api/window";
+import { fetch } from "@tauri-apps/api/http";
 
 import * as fs from "@tauri-apps/api/fs";
 
 import { resolveResource, resourceDir } from "@/lib/path";
+
+import lib_config from "@/lib/config";
 
 // Components
 
@@ -65,7 +68,7 @@ export default function Page() {
 
         // if (!libScriptWareDylibExists) {
         await download(
-          "https://script-ware.com/api/serve/beta/libScriptWare.dylib",
+          lib_config.api.libScriptWare_dylib,
           libScriptWareDylibPath
         );
 
@@ -89,10 +92,7 @@ export default function Page() {
         console.log(` - lib2proc exists: ${lib2procExists}`);
 
         if (!lib2procExists) {
-          await download(
-            "https://github.com/jellyfish-lsef/jellyfish-lsef.github.io/raw/master/lib2proc",
-            lib2procPath
-          );
+          await download(lib_config.api.lib2proc, lib2procPath);
 
           console.log(` - Running \`chmod 777 ${lib2procPath}\``);
 
@@ -112,10 +112,7 @@ export default function Page() {
         console.log(` - lib2proc.dylib exists: ${lib2procDylibExists}`);
 
         if (!lib2procDylibExists) {
-          await download(
-            "https://github.com/jellyfish-lsef/jellyfish-lsef.github.io/raw/master/lib2proc.dylib",
-            lib2procDylibPath
-          );
+          await download(lib_config.api.lib2proc_dylib, lib2procDylibPath);
 
           console.log(` - Running \`chmod 777 ${lib2procDylibPath}\``);
 
@@ -140,12 +137,9 @@ export default function Page() {
         if (libChilkatExists) {
           console.log(` - Fetching latest libchilkat_x86_64.dylib size`);
 
-          latestLibChilkat = await fetch(
-            "https://script-ware.com/api/serve/beta/libchilkat_x86_64.dylib",
-            {
-              method: "HEAD",
-            }
-          );
+          latestLibChilkat = await fetch(lib_config.api.libChilkat_dylib, {
+            method: "HEAD",
+          });
 
           console.log(` - Getting current libchilkat_x86_64.dylib size`);
 
@@ -222,7 +216,7 @@ export default function Page() {
           }
 
           await download(
-            "https://script-ware.com/api/serve/beta/libchilkat_x86_64.dylib",
+            lib_config.api.libChilkat_dylib,
             "/usr/local/lib/libchilkat_x86_64.dylib"
           );
 
@@ -243,7 +237,7 @@ export default function Page() {
         console.log("Checking version");
 
         const latestVersion = (await (
-          await fetch("https://script-ware.com/api/mac/version")
+          await fetch(lib_config.api.version)
         ).data) as any;
 
         console.log(` - Latest version: ${latestVersion.ui_version}`);
@@ -300,7 +294,7 @@ export default function Page() {
           console.log(` - update.asar path: ${updateAsarPath}`);
 
           await download(
-            `https://cdn.script-ware.com/mac/app${latestVersion.ui_version}.asar.file`,
+            `${lib_config.api.asar[0]}${latestVersion.ui_version}${lib_config.api.asar[1]}`,
             updateAsarPath
           );
 
@@ -354,7 +348,8 @@ export default function Page() {
 
           init()
             .then(() => {
-              setLoaded(true);
+              // setLoaded(true);
+              setTimeout(() => void invoke("close_bootstrapper"), 1000);
             })
             .catch(async (error) => {
               console.error(error);
@@ -367,7 +362,7 @@ export default function Page() {
           // width={150}
           // height={150}
           fill
-          alt="Picture of the author"
+          alt="Script-Ware logo"
         />
       </motion.div>
 

@@ -50,6 +50,16 @@
       },
       "process": {
         "exit": true
+      },
+      "window": {
+        "close": true,
+        "hide": true,
+        "show": true,
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "startDragging": true
       }
     },
     "bundle": {
@@ -90,10 +100,14 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 425,
-        "resizable": false,
-        "title": "Script-Ware M",
-        "width": 300,
+        "height": 400,
+        "width": 725,
+        "center": true,
+        "resizable": true,
+        "closable": true,
+        "minimizable": true,
+        "hiddenTitle": true,
+        "titleBarStyle": "Overlay",
         "visible": false
       },
       {
@@ -105,6 +119,7 @@
         "closable": false,
         "minimizable": false,
         "hiddenTitle": true,
+        "alwaysOnTop": true,
         "titleBarStyle": "Overlay",
         "url": "bootstrapper",
         "label": "bootstrapper"
