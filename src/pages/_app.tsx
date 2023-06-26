@@ -1,5 +1,3 @@
-"use client";
-
 // Packages
 
 import { useEffect } from "react";
@@ -18,11 +16,11 @@ import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// Types
+
+import type { AppProps } from "next/app";
+
+export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const gradient: any = new Gradient();
 
@@ -42,7 +40,7 @@ export default function RootLayout({
         <div className={styles["gradient-blur"]} />
         <canvas className={styles["gradient-canvas"]} id="gradient-canvas" />
 
-        {children}
+        <Component {...pageProps} />
       </body>
     </html>
   );

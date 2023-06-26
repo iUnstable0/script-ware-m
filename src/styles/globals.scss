@@ -1,0 +1,54 @@
+:root {
+  --input-status-border: 3px;
+
+  --input-success-color: #00C853;
+  --input-error-color: #EF5350;
+
+  --medium-blue: #121d2e;
+  --medium-blue-2: #0b3a67;
+  --medium-blue-3: #082c4f;
+  --deep-blue: #041322;
+  --deep-blue-2: #041525;
+  --light-blue: #1d2e3e;
+  --light-blue-2: #12223a;
+
+  --link-color: #0ea5e9;
+
+  --text-color-dark: #3f3f46;
+  --accent-color: #ffc107;
+}
+
+body {
+  /* background-color: var(--medium-blue); */
+  background-color: transparent !important;
+  border-radius: 10px !important;
+}
+
+* {
+  // Scrollbar background color
+  // scrollbar-color: var(--light-blue-2) var(--medium-blue-2);
+  // Scrollbar width
+  // scrollbar-width: thin;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #e5e5e5;
+  -webkit-box-shadow: 0 0 0 1000px var(--light-blue-2) inset;
+  box-shadow: 0 0 0 1000px var(--light-blue-2) inset;
+  caret-color: #e5e5e5;
+  color: #e5e5e5;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}

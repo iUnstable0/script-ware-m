@@ -1,0 +1,84 @@
+.blur {
+  // display: none;
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  //z-index: 2;
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  //-moz-backdrop-filter: blur(8px);
+  //-o-backdrop-filter: blur(8px);
+  //-ms-backdrop-filter: blur(8px);
+}
+
+// .blur-active {
+// 	display: block;
+// }
+
+// .fade-in {
+// 	animation-name: FadeIn;
+// 	animation-duration: 0.3s;
+// 	transition-timing-function: ease-in-out;
+// 	-webkit-animation-name: FadeIn;
+// 	-webkit-animation-duration: 0.3s;
+// 	-webkit-transition-timing-function: ease-in-out;
+// 	-moz-animation-name: FadeIn;
+// 	-moz-animation-duration: 0.3s;
+// 	-moz-transition-timing-function: ease-in-out;
+// 	-o-animation-name: FadeIn;
+// 	-o-animation-duration: 0.3s;
+// 	-o-transition-timing-function: ease-in-out;
+// 	-ms-animation-name: FadeIn;
+// 	-ms-animation-duration: 0.3s;
+// 	-ms-transition-timing-function: ease-in-out;
+// }
+
+// @keyframes FadeIn {
+// 	0% {
+// 		opacity: 0;
+// 	}
+// 	100% {
+// 		opacity: 1;
+// 	}
+// }
+
+// @-moz-keyframes FadeIn {
+// 	0% {
+// 		opacity: 0;
+// 	}
+// 	100% {
+// 		opacity: 1;
+// 	}
+// }
+
+// @-webkit-keyframes FadeIn {
+// 	0% {
+// 		opacity: 0;
+// 	}
+// 	100% {
+// 		opacity: 1;
+// 	}
+// }
+
+// @-o-keyframes FadeIn {
+// 	0% {
+// 		opacity: 0;
+// 	}
+// 	100% {
+// 		opacity: 1;
+// 	}
+// }
+
+// @-ms-keyframes FadeIn {
+// 	0% {
+// 		opacity: 0;
+// 	}
+// 	100% {
+// 		opacity: 1;
+// 	}
+// }

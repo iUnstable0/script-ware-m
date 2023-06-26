@@ -1,0 +1,4 @@
+# .rustfmt.toml
+
+# Use 2 spaces for indentation
+tab_spaces = 2

@@ -1,0 +1,24 @@
+.gradient-canvas {
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  --gradient-color-1: #121d2e;
+  --gradient-color-2: #12223a;
+  --gradient-color-3: #162a49;
+  --gradient-color-4: #122c3a;
+}
+
+.gradient-blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(24px);
+  background-color: rgba(0, 0, 0, 0.1);
+}

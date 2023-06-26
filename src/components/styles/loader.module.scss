@@ -1,0 +1,19 @@
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 3px solid;
+  border-radius: 100%;
+  border-color: #e0e0e0; /* default secondary color */
+  border-right-color: #616161; /* default primary color */
+  animation: rotate 1s linear infinite;
+}
