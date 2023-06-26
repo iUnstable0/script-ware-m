@@ -1,23 +1,137 @@
-.container {
-  height: 30px;
-  background: #329ea3;
-  user-select: none;
+//.container {
+//  //height: 45px;
+//  height: 100%;
+//  width: 70px;
+//
+//  display: flex;
+//  justify-content: flex-end;
+//
+//  position: fixed;
+//  top: 0;
+//  left: 0;
+//  right: 0;
+//
+//  z-index: 2;
+//
+//  background: var(--deep-blue);
+//  user-select: none;
+//}
+
+.logo {
+  margin: 5px;
+}
+
+.topbar {
+  height: 40px;
+
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+
+  //thick white border
+
+  border-bottom: 1px solid #1d2e3e;
+
+  border-radius: 10px 10px 0 0;
+
+  z-index: 2;
+
+  background: rgba(4, 19, 34, 0.7);
+  user-select: none;
 }
 
-.titlebar-button {
-  display: inline-flex;
-  justify-content: center;
+.leftbar_container {
+  width: 40px;
+  height: 100%;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  box-sizing: border-box;
+
+  z-index: 1;
+
+  padding-top: 40px;
+  padding-bottom: 25px;
+
+  user-select: none;
+}
+
+.leftbar {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  width: 30px;
-  height: 30px;
+
+  border-right: 1px solid #1d2e3e;
+
+  background: rgba(4, 19, 34, 0.7);
 }
 
-.titlebar-button:hover {
-  background: #5bbec3;
+.bottombar {
+  height: 25px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  border-top: 1px solid #1d2e3e;
+
+  border-radius: 0 0 10px 10px;
+
+  z-index: 2;
+
+  background: rgba(4, 19, 34, 0.7);
+
+  user-select: none;
+}
+
+.rightbar_container {
+  width: 40px;
+  height: 100%;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  box-sizing: border-box;
+
+  z-index: 1;
+
+  padding-top: 40px;
+  padding-bottom: 25px;
+
+  user-select: none;
+}
+
+.rightbar {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  border-left: 1px solid #1d2e3e;
+
+  background: rgba(4, 19, 34, 0.7);
 }

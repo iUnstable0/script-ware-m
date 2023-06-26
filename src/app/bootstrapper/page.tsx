@@ -4,10 +4,8 @@
 
 import { useState } from "react";
 
-import { Command, open } from "@tauri-apps/api/shell";
+import { Command } from "@tauri-apps/api/shell";
 import { invoke } from "@tauri-apps/api/tauri";
-// import { exit } from "@tauri-apps/api/process";
-// import { appWindow } from "@tauri-apps/api/window";
 import { fetch } from "@tauri-apps/api/http";
 
 import * as fs from "@tauri-apps/api/fs";

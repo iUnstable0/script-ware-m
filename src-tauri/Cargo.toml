@@ -17,7 +17,7 @@ tauri-build = { version = "1.4.0", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.4.0", features = [ "window-close", "window-hide", "window-unmaximize", "window-show", "window-maximize", "window-unminimize", "window-minimize", "window-start-dragging", "fs-remove-file", "shell-open", "process-exit", "fs-read-file", "shell-execute", "fs-write-file", "http-request", "fs-exists", "path-all"] }
+tauri = { version = "1.4.0", features = [ "window-minimize", "macos-private-api", "window-start-dragging", "fs-remove-file", "fs-read-file", "shell-execute", "fs-write-file", "http-request", "fs-exists", "path-all"] }
 reqwest = { version = "0.11.18", features = ["json", "stream"] }
 tokio = { version = "1.28.2", features = ["full"] }
 tokio-stream = "0.1.14"

@@ -36,6 +36,7 @@ export default function RootLayout({
         overscrollBehavior: "none",
         overflow: "hidden",
         overflowY: "hidden",
+        border: "none",
       }}
     >
       <body className={inter.className}>

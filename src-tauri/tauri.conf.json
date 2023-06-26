@@ -33,7 +33,6 @@
         "all": true
       },
       "shell": {
-        "open": true,
         "execute": true,
         "scope": [
           {
@@ -48,18 +47,9 @@
           }
         ]
       },
-      "process": {
-        "exit": true
-      },
       "window": {
-        "close": true,
-        "hide": true,
-        "show": true,
-        "maximize": true,
-        "minimize": true,
-        "unmaximize": true,
-        "unminimize": true,
-        "startDragging": true
+        "startDragging": true,
+        "minimize": true
       }
     },
     "bundle": {
@@ -99,31 +89,28 @@
     },
     "windows": [
       {
-        "fullscreen": false,
         "height": 400,
         "width": 725,
         "center": true,
-        "resizable": true,
-        "closable": true,
-        "minimizable": true,
-        "hiddenTitle": true,
-        "titleBarStyle": "Overlay",
+        "decorations": false,
+        "transparent": true,
         "visible": false
       },
       {
-        "fullscreen": false,
         "height": 400,
         "width": 300,
         "center": true,
+        "fullscreen": false,
         "resizable": false,
         "closable": false,
         "minimizable": false,
-        "hiddenTitle": true,
         "alwaysOnTop": true,
-        "titleBarStyle": "Overlay",
+        "decorations": false,
+        "transparent": true,
         "url": "bootstrapper",
         "label": "bootstrapper"
       }
-    ]
+    ],
+    "macOSPrivateApi": true
   }
 }
