@@ -1,6 +1,6 @@
 // Packages
 
-import { appWindow } from "@/lib/window";
+// import { appWindow } from "@/lib/window";
 
 // Styles
 

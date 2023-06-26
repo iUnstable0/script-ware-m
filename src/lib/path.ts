@@ -9,11 +9,9 @@ export async function resolveResource(resourcePath: string): Promise<string> {
     return Promise.resolve("");
   }
 
-  const tauriAppsApiPath = await import("@tauri-apps/api/path");
-
-  const tauriResolveResource = tauriAppsApiPath.resolveResource;
-
-  return await tauriResolveResource(resourcePath);
+  return await (
+    await import("@tauri-apps/api/path")
+  ).resolveResource(resourcePath);
 }
 
 export async function resourceDir(): Promise<string> {
@@ -22,11 +20,7 @@ export async function resourceDir(): Promise<string> {
     return Promise.resolve("");
   }
 
-  const tauriAppsApiPath = await import("@tauri-apps/api/path");
-
-  const tauriResourceDir = tauriAppsApiPath.resourceDir;
-
-  return await tauriResourceDir();
+  return await (await import("@tauri-apps/api/path")).resourceDir();
 }
 
 export async function join(...paths: string[]): Promise<string> {
@@ -35,9 +29,5 @@ export async function join(...paths: string[]): Promise<string> {
     return Promise.resolve("");
   }
 
-  const tauriAppsApiPath = await import("@tauri-apps/api/path");
-
-  const tauriJoin = tauriAppsApiPath.join;
-
-  return await tauriJoin(...paths);
+  return await (await import("@tauri-apps/api/path")).join(...paths);
 }

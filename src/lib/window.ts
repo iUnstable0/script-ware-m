@@ -11,9 +11,5 @@ export async function appWindow(): Promise<any> {
     return Promise.resolve("");
   }
 
-  const tauriWindow = await import("@tauri-apps/api/window");
-
-  const tauriAppWindow = tauriWindow.appWindow;
-
-  return tauriAppWindow;
+  return (await import("@tauri-apps/api/window")).appWindow;
 }
