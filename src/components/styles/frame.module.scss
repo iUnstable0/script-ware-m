@@ -47,12 +47,12 @@
 
   z-index: 2;
 
-  background: rgba(4, 19, 34, 0.7);
+  background: rgba(4, 19, 34, 0.5);
   user-select: none;
 }
 
 .topbar_item {
-  margin-right: 3px;
+  margin-right: 4px;
 
   padding: 5px;
 
@@ -74,6 +74,10 @@
   left: 0;
   bottom: 0;
 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
   box-sizing: border-box;
 
   z-index: 1;
@@ -92,7 +96,7 @@
 
   border-right: 1px solid #1d2e3e;
 
-  background: rgba(4, 19, 34, 0.7);
+  background: rgba(4, 19, 34, 0.5);
 }
 
 .leftbar_item {
@@ -100,15 +104,17 @@
 
   border-radius: 7px;
 
+  //background: red;
+
   transition: background 0.25s;
 }
 
 .leftbar_item_top {
-  margin-top: 7px;
+  margin-top: 4px;
 }
 
 .leftbar_item_bottom {
-  margin-bottom: 1px;
+  //margin-bottom: 1px;
 }
 
 .leftbar_item:hover {
@@ -131,7 +137,7 @@
 
   z-index: 2;
 
-  background: rgba(4, 19, 34, 0.7);
+  background: rgba(4, 19, 34, 0.5);
 
   user-select: none;
 }
@@ -163,5 +169,5 @@
 
   border-left: 1px solid #1d2e3e;
 
-  background: rgba(4, 19, 34, 0.7);
+  background: rgba(4, 19, 34, 0.5);
 }

@@ -12,6 +12,12 @@ import Image from "next/image";
 
 import frameStyles from "@/components/styles/frame.module.scss";
 
+// Fonts
+
+import { Mulish } from "next/font/google";
+
+const mulish = Mulish({ subsets: ["latin"] });
+
 export default function Component() {
   return (
     <>
@@ -19,26 +25,71 @@ export default function Component() {
         data-tauri-drag-region
         className={clsx(frameStyles.bar, frameStyles.topbar)}
       >
-        <div>
-          <Image
-            src="logo.svg"
-            alt="Script-Ware Logo"
-            width={35}
-            height={35}
-            className={frameStyles.logo}
-          />
-        </div>
         <div
           style={{
-            color: "#e2e2e2",
-            fontSize: "14px",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            marginLeft: "10px",
+            marginBottom: "6px",
           }}
         >
-          Script-Ware M
+          {/*<Image*/}
+          {/*  src="logo.svg"*/}
+          {/*  alt="Script-Ware Logo"*/}
+          {/*  width={35}*/}
+          {/*  height={35}*/}
+          {/*  className={frameStyles.logo}*/}
+          {/*/>*/}
+          <p
+            className={mulish.className}
+            style={{
+              color: "#e2e2e2",
+              fontSize: "16px",
+              fontWeight: 700,
+              fontStyle: "italic",
+            }}
+          >
+            Script
+          </p>
+          <p
+            className={mulish.className}
+            style={{
+              color: "#2b72e0",
+              fontSize: "16px",
+              fontWeight: 700,
+              fontStyle: "italic",
+            }}
+          >
+            -
+          </p>
+          <p
+            className={mulish.className}
+            style={{
+              color: "#e2e2e2",
+              fontSize: "16px",
+              fontWeight: 700,
+              fontStyle: "italic",
+              marginLeft: "-2px",
+            }}
+          >
+            Ware
+          </p>
         </div>
+        <div></div>
         <div>
           <Image
-            src="settings.svg"
+            src="assets/frame/notifications.svg"
+            alt="Files"
+            width={24}
+            height={24}
+            className={frameStyles.topbar_item}
+            // style={{
+            //   marginRight: "6px",
+            // }}
+          />
+          <Image
+            src="assets/frame/settings.svg"
             alt="Files"
             width={24}
             height={24}
@@ -52,10 +103,35 @@ export default function Component() {
           data-tauri-drag-region
           className={clsx(frameStyles.bar, frameStyles.leftbar)}
         >
-          <div>
+          <div
+            style={{
+              paddingLeft: "2px",
+              // marginLeft: "2px",
+            }}
+          >
             <Image
-              src="project.svg"
+              src="assets/frame/home.svg"
+              alt="Home"
+              width={24}
+              height={24}
+              className={clsx(
+                frameStyles.leftbar_item,
+                frameStyles.leftbar_item_top
+              )}
+            />
+            <Image
+              src="assets/frame/folder.svg"
               alt="Files"
+              width={24}
+              height={24}
+              className={clsx(
+                frameStyles.leftbar_item,
+                frameStyles.leftbar_item_top
+              )}
+            />
+            <Image
+              src="assets/frame/library.svg"
+              alt="Script Library"
               width={24}
               height={24}
               className={clsx(
@@ -66,7 +142,7 @@ export default function Component() {
           </div>
           <div>
             <Image
-              src="terminal.svg"
+              src="assets/frame/terminal.svg"
               alt="Files"
               width={24}
               height={24}
