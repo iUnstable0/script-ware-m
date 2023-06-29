@@ -3,7 +3,7 @@
   height: 100%;
 
   position: absolute;
-  
+
   transform: translateX(-50%) translateY(-50%);
   left: 50%;
   top: 50%;
@@ -12,6 +12,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  border: none;
+
+  background: transparent;
 
   overflow: hidden;
 }

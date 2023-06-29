@@ -21,7 +21,9 @@
 body {
   /* background-color: var(--medium-blue); */
   background-color: transparent !important;
-  border-radius: 10px !important;
+  //border-radius: 18px !important;
+
+  border: none !important;
 }
 
 * {
@@ -29,6 +31,7 @@ body {
   // scrollbar-color: var(--light-blue-2) var(--medium-blue-2);
   // Scrollbar width
   // scrollbar-width: thin;
+  cursor: default;
 }
 
 input:-webkit-autofill,

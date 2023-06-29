@@ -67,16 +67,18 @@ export default function Page() {
         // );
 
         // if (!libScriptWareDylibExists) {
-        await download(
-          lib_config.api.libScriptWare_dylib,
-          libScriptWareDylibPath
-        );
-
-        console.log(` - Running \`chmod 777 ${libScriptWareDylibPath}\``);
-
-        await (
-          await new Command("chmod", ["777", libScriptWareDylibPath])
-        ).spawn();
+        // TODO: Uncomment this
+        // await download(
+        //   lib_config.api.libScriptWare_dylib,
+        //   libScriptWareDylibPath
+        // );
+        //
+        // console.log(` - Running \`chmod 777 ${libScriptWareDylibPath}\``);
+        //
+        // await (
+        //   await new Command("chmod", ["777", libScriptWareDylibPath])
+        // ).spawn();
+        // TODO: Uncomment this
         // }
 
         // -------------------- lib2proc -------------------- //
@@ -341,6 +343,10 @@ export default function Page() {
     <AnimatePresence>
       {!loaded && (
         <motion.div
+          key={"bootstrapper"}
+          style={{
+            border: "none",
+          }}
           initial={{
             opacity: 0,
           }}
@@ -354,8 +360,19 @@ export default function Page() {
             duration: 0.25,
           }}
         >
-          <div className={styles["gradient-blur"]} />
-          <canvas className={styles["gradient-canvas"]} id="gradient-canvas" />
+          <div
+            className={styles.gradient_blur}
+            style={{
+              borderRadius: "18px",
+            }}
+          />
+          <canvas
+            className={styles.gradient_canvas}
+            id="gradient-canvas"
+            style={{
+              borderRadius: "18px",
+            }}
+          />
 
           <div className={bootstrapperStyles.container}>
             <motion.div

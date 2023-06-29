@@ -14,6 +14,7 @@ function normalizeColor(hexCode) {
     (255 & hexCode) / 255,
   ];
 }
+
 ["SCREEN", "LINEAR_LIGHT"].reduce(
   (hexCode, t, n) =>
     Object.assign(hexCode, {
@@ -59,6 +60,7 @@ class MiniGl {
           value: class {
             constructor(vertexShaders, fragments, uniforms = {}) {
               const material = this;
+
               function getShaderByType(type, source) {
                 const shader = context.createShader(type);
                 return (
@@ -72,6 +74,7 @@ class MiniGl {
                   shader
                 );
               }
+
               function getUniformVariableDeclarations(uniforms, type) {
                 return Object.entries(uniforms)
                   .map(([uniform, value]) =>
@@ -79,6 +82,7 @@ class MiniGl {
                   )
                   .join("\n");
               }
+
               (material.uniforms = uniforms), (material.uniformInstances = []);
 
               const prefix =
@@ -117,6 +121,7 @@ class MiniGl {
                 material.attachUniforms(void 0, _miniGl.commonUniforms),
                 material.attachUniforms(void 0, material.uniforms);
             }
+
             //t = uniform
             attachUniforms(name, uniforms) {
               //n  = material
@@ -163,6 +168,7 @@ class MiniGl {
                 }[this.type] || "1f"),
                 this.update();
             }
+
             update(value) {
               void 0 !== this.value &&
                 context[`uniform${this.typeFn}`](
@@ -173,6 +179,7 @@ class MiniGl {
                   0 === this.typeFn.indexOf("Matrix") ? this.value : null
                 );
             }
+
             //e - name
             //t - type
             //n - length
@@ -239,6 +246,7 @@ class MiniGl {
                 this.setTopology(n, i),
                 this.setSize(width, height, orientation);
             }
+
             setTopology(e = 1, t = 1) {
               const n = this;
               (n.xSegCount = e),
@@ -283,6 +291,7 @@ class MiniGl {
                   index: n.attributes.index,
                 });
             }
+
             setSize(width = 1, height = 1, orientation = "xz") {
               const geometry = this;
               (geometry.width = width),
@@ -340,6 +349,7 @@ class MiniGl {
                   mesh: mesh,
                 });
             }
+
             draw() {
               context.useProgram(this.material.program),
                 this.material.uniformInstances.forEach(
@@ -355,6 +365,7 @@ class MiniGl {
                   0
                 );
             }
+
             remove() {
               _miniGl.meshes = _miniGl.meshes.filter((e) => e != this);
             }
@@ -370,6 +381,7 @@ class MiniGl {
                 Object.assign(this, e),
                 this.update();
             }
+
             update() {
               void 0 !== this.values &&
                 (context.bindBuffer(this.target, this.buffer),
@@ -379,6 +391,7 @@ class MiniGl {
                   context.STATIC_DRAW
                 ));
             }
+
             attach(e, t) {
               const n = context.getAttribLocation(t, e);
               return (
@@ -395,6 +408,7 @@ class MiniGl {
                 n
               );
             }
+
             use(e) {
               context.bindBuffer(this.target, this.buffer),
                 this.target === context.ARRAY_BUFFER &&
@@ -431,6 +445,7 @@ class MiniGl {
       }),
     };
   }
+
   setSize(e = 640, t = 480) {
     (this.width = e),
       (this.height = t),
@@ -444,6 +459,7 @@ class MiniGl {
         height: t,
       });
   }
+
   //left, right, top, bottom, near, far
   setOrthographicCamera(e = 0, t = 0, n = 0, i = -2e3, s = 2e3) {
     (this.commonUniforms.projectionMatrix.value = [
@@ -469,6 +485,7 @@ class MiniGl {
         this.commonUniforms.projectionMatrix.value
       );
   }
+
   render() {
     this.gl.clearColor(0, 0, 0, 0),
       this.gl.clearDepth(1),
@@ -492,9 +509,10 @@ function e(object, propertyName, val) {
 }
 
 //Gradient object
-class Gradient {
+class GradientModified {
   constructor(...t) {
-    e(this, "el", void 0),
+    e(this, "frame", 0),
+      e(this, "el", void 0),
       e(this, "cssVarRetries", 0),
       e(this, "maxCssVarRetries", 200),
       e(this, "angle", 0),
@@ -581,11 +599,14 @@ class Gradient {
         }
         if (0 !== this.last && this.isStatic)
           return this.minigl.render(), void this.disconnect();
-        /*this.isIntersecting && */ (this.conf.playing || this.isMouseDown) &&
+        this.frame += 1;
+        /*this.isIntersecting && */
+        (this.conf.playing || this.isMouseDown) &&
           requestAnimationFrame(this.animate);
       }),
       e(this, "addIsLoadedClass", () => {
-        /*this.isIntersecting && */ !this.isLoadedClass &&
+        /*this.isIntersecting && */
+        !this.isLoadedClass &&
           ((this.isLoadedClass = !0),
           this.el.classList.add("isLoaded"),
           setTimeout(() => {
@@ -604,6 +625,7 @@ class Gradient {
         return this;
       });
   }
+
   async connect() {
     (this.shaderFiles = {
       vertex:
@@ -631,16 +653,17 @@ class Gradient {
               ((this.computedCanvasStyle = getComputedStyle(this.el)),
               this.waitForCssVars());
           }));
-          /*
-        this.scrollObserver = await s.create(.1, !1),
-        this.scrollObserver.observe(this.el),
-        this.scrollObserver.onSeparate(() => {
-            window.removeEventListener("scroll", this.handleScroll), window.removeEventListener("mousedown", this.handleMouseDown), window.removeEventListener("mouseup", this.handleMouseUp), window.removeEventListener("keydown", this.handleKeyDown), this.isIntersecting = !1, this.conf.playing && this.pause()
-        }),
-        this.scrollObserver.onIntersect(() => {
-            window.addEventListener("scroll", this.handleScroll), window.addEventListener("mousedown", this.handleMouseDown), window.addEventListener("mouseup", this.handleMouseUp), window.addEventListener("keydown", this.handleKeyDown), this.isIntersecting = !0, this.addIsLoadedClass(), this.play()
-        })*/
+    /*
+	this.scrollObserver = await s.create(.1, !1),
+	this.scrollObserver.observe(this.el),
+	this.scrollObserver.onSeparate(() => {
+			window.removeEventListener("scroll", this.handleScroll), window.removeEventListener("mousedown", this.handleMouseDown), window.removeEventListener("mouseup", this.handleMouseUp), window.removeEventListener("keydown", this.handleKeyDown), this.isIntersecting = !1, this.conf.playing && this.pause()
+	}), 
+	this.scrollObserver.onIntersect(() => {
+			window.addEventListener("scroll", this.handleScroll), window.addEventListener("mousedown", this.handleMouseDown), window.addEventListener("mouseup", this.handleMouseUp), window.addEventListener("keydown", this.handleKeyDown), this.isIntersecting = !0, this.addIsLoadedClass(), this.play()
+	})*/
   }
+
   disconnect() {
     this.scrollObserver &&
       (window.removeEventListener("scroll", this.handleScroll),
@@ -650,6 +673,7 @@ class Gradient {
       this.scrollObserver.disconnect()),
       window.removeEventListener("resize", this.resize);
   }
+
   initMaterial() {
     this.uniforms = {
       u_time: new this.minigl.Uniform({
@@ -766,34 +790,41 @@ class Gradient {
       )
     );
   }
+
   initMesh() {
     (this.material = this.initMaterial()),
       (this.geometry = new this.minigl.PlaneGeometry()),
       (this.mesh = new this.minigl.Mesh(this.geometry, this.material));
   }
+
   shouldSkipFrame(e) {
     return (
       !!window.document.hidden ||
       !this.conf.playing ||
-      parseInt(e, 10) % 2 == 0 ||
+      this.frame % 2 == 0 ||
       void 0
     );
   }
+
   updateFrequency(e) {
     (this.freqX += e), (this.freqY += e);
   }
+
   toggleColor(index) {
     this.activeColors[index] = 0 === this.activeColors[index] ? 1 : 0;
   }
+
   showGradientLegend() {
     this.width > this.minWidth &&
       ((this.isGradientLegendVisible = !0),
       document.body.classList.add("isGradientLegendVisible"));
   }
+
   hideGradientLegend() {
     (this.isGradientLegendVisible = !1),
       document.body.classList.remove("isGradientLegendVisible");
   }
+
   init() {
     this.initGradientColors(),
       this.initMesh(),
@@ -801,6 +832,7 @@ class Gradient {
       requestAnimationFrame(this.animate),
       window.addEventListener("resize", this.resize);
   }
+
   /*
    * Waiting for the css variables to become available, usually on page load before we can continue.
    * Using default colors assigned below if no variables have been found after maxCssVarRetries
@@ -826,6 +858,7 @@ class Gradient {
       requestAnimationFrame(() => this.waitForCssVars());
     }
   }
+
   /*
    * Initializes the four section colors by retrieving them from css variables.
    */
@@ -870,4 +903,4 @@ class Gradient {
  * Gradient.updateFrequency(freq)
  */
 
-export { Gradient };
+export { GradientModified };

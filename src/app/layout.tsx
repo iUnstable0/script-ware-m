@@ -25,7 +25,14 @@ export default function RootLayout({
         border: "none",
       }}
     >
-      <body className={inter.className}>{children}</body>
+      <body
+        className={inter.className}
+        style={{
+          border: "none",
+        }}
+      >
+        {children}
+      </body>
     </html>
   );
 }
