@@ -15,18 +15,33 @@ import styles from "@/styles/index.module.scss";
 import pageStyles from "@/components/styles/page.module.scss";
 
 export default function Page({
-  terminalVisibleState,
+  terminalState,
 }: {
-  terminalVisibleState: {
+  terminalState: {
     terminalVisible: boolean;
     setTerminalVisible: (terminalVisible: boolean) => void;
+    terminalHeight: number;
+    setTerminalHeight: (terminalHeight: number) => void;
+    renderTerminalHeight: number;
+    setRenderTerminalHeight: (renderTerminalHeight: number) => void;
+    terminalResizing: boolean;
+    setTerminalResizing: (terminalResizing: boolean) => void;
   };
 }) {
-  const { terminalVisible, setTerminalVisible } = terminalVisibleState;
+  const {
+    terminalVisible,
+    setTerminalVisible,
+    terminalHeight,
+    setTerminalHeight,
+    renderTerminalHeight,
+    setRenderTerminalHeight,
+    terminalResizing,
+    setTerminalResizing,
+  } = terminalState;
 
   const monacoRef = useRef(null);
 
-  function handleEditorWillMount(monaco) {
+  function handleEditorWillMount(monaco: any) {
     monaco.editor.defineTheme("default", {
       base: "vs-dark",
       inherit: true,
@@ -103,12 +118,18 @@ export default function Page({
   }
 
   return (
-    <div className={pageStyles.container}>
+    <div
+      className={pageStyles.container}
+      style={{
+        height: terminalVisible
+          ? `calc(100% - ${
+              (terminalResizing ? renderTerminalHeight : terminalHeight) - 25
+            }px)`
+          : "100%",
+      }}
+    >
       <Editor
-        className={clsx(
-          pageStyles.editor,
-          terminalVisible && pageStyles.editor_terminal
-        )}
+        className={pageStyles.editor}
         defaultLanguage="lua"
         defaultValue={`print("Hello World!")`}
         beforeMount={handleEditorWillMount}

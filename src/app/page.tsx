@@ -32,6 +32,10 @@ export default function Page() {
   const [terminalVisible, setTerminalVisible] = useState<boolean>(false),
     [editorVisible, setEditorVisible] = useState<boolean>(true);
 
+  const [terminalHeight, setTerminalHeight] = useState<number>(100),
+    [renderTerminalHeight, setRenderTerminalHeight] = useState<number>(100),
+    [terminalResizing, setTerminalResizing] = useState<boolean>(false);
+
   // const monacoRef = useRef(null);
 
   // function handleEditorWillMount(monaco) {
@@ -134,94 +138,22 @@ export default function Page() {
           page,
           setPage,
         }}
-        terminalVisibleState={{
+        terminalState={{
           terminalVisible,
           setTerminalVisible,
+          terminalHeight,
+          setTerminalHeight,
+          renderTerminalHeight,
+          setRenderTerminalHeight,
+          terminalResizing,
+          setTerminalResizing,
         }}
-        editorVisibleState={{
+        editorState={{
           editorVisible,
           setEditorVisible,
         }}
       />
 
-      {/*<AnimatePresence>*/}
-      {/*  {page === "home" && (*/}
-      {/*    <motion.div*/}
-      {/*      key={page}*/}
-      {/*      initial={{*/}
-      {/*        opacity: 0,*/}
-      {/*        display: "none",*/}
-      {/*      }}*/}
-      {/*      animate={{*/}
-      {/*        opacity: 1,*/}
-      {/*        display: "block",*/}
-      {/*        transition: {*/}
-      {/*          delay: 0.15,*/}
-      {/*        },*/}
-      {/*      }}*/}
-      {/*      exit={{*/}
-      {/*        opacity: 0,*/}
-      {/*      }}*/}
-      {/*      transition={{*/}
-      {/*        duration: 0.15,*/}
-      {/*      }}*/}
-      {/*    >*/}
-      {/*      <Home />*/}
-      {/*    </motion.div>*/}
-      {/*  )}*/}
-
-      {/*  {page === "editor" && (*/}
-      {/*    <motion.div*/}
-      {/*      key={page}*/}
-      {/*      initial={{*/}
-      {/*        opacity: 0,*/}
-      {/*        display: "none",*/}
-      {/*      }}*/}
-      {/*      animate={{*/}
-      {/*        opacity: 1,*/}
-      {/*        display: "block",*/}
-      {/*        transition: {*/}
-      {/*          delay: 0.15,*/}
-      {/*        },*/}
-      {/*      }}*/}
-      {/*      exit={{*/}
-      {/*        opacity: 0,*/}
-      {/*      }}*/}
-      {/*      transition={{*/}
-      {/*        duration: 0.15,*/}
-      {/*      }}*/}
-      {/*    >*/}
-      {/*      <Editor />*/}
-      {/*    </motion.div>*/}
-      {/*  )}*/}
-
-      {/*  {page === "library" && (*/}
-      {/*    <motion.div*/}
-      {/*      key={page}*/}
-      {/*      initial={{*/}
-      {/*        opacity: 0,*/}
-      {/*        display: "none",*/}
-      {/*      }}*/}
-      {/*      animate={{*/}
-      {/*        opacity: 1,*/}
-      {/*        display: "block",*/}
-      {/*        transition: {*/}
-      {/*          delay: 0.15,*/}
-      {/*        },*/}
-      {/*      }}*/}
-      {/*      exit={{*/}
-      {/*        opacity: 0,*/}
-      {/*      }}*/}
-      {/*      transition={{*/}
-      {/*        duration: 0.15,*/}
-      {/*      }}*/}
-      {/*    >*/}
-      {/*      <Library />*/}
-      {/*    </motion.div>*/}
-      {/*  )}*/}
-      {/*</AnimatePresence>*/}
-
-      {/*<AnimatePresence>*/}
       <div
         className={styles.page_container}
         style={{
@@ -232,27 +164,6 @@ export default function Page() {
         <Home />
       </div>
 
-      {/*{editorVisible && (*/}
-      {/*  <motion.div*/}
-      {/*    key={page}*/}
-      {/*    initial={{*/}
-      {/*      opacity: 0,*/}
-      {/*      display: "none",*/}
-      {/*    }}*/}
-      {/*    animate={{*/}
-      {/*      opacity: 1,*/}
-      {/*      display: "block",*/}
-      {/*      transition: {*/}
-      {/*        delay: 0.15,*/}
-      {/*      },*/}
-      {/*    }}*/}
-      {/*    exit={{*/}
-      {/*      opacity: 0,*/}
-      {/*    }}*/}
-      {/*    transition={{*/}
-      {/*      duration: 0.15,*/}
-      {/*    }}*/}
-      {/*  >*/}
       {editorVisible && (
         <div
           className={styles.page_container}
@@ -261,7 +172,16 @@ export default function Page() {
           }}
         >
           <Editor
-            terminalVisibleState={{ terminalVisible, setTerminalVisible }}
+            terminalState={{
+              terminalVisible,
+              setTerminalVisible,
+              terminalHeight,
+              setTerminalHeight,
+              renderTerminalHeight,
+              setRenderTerminalHeight,
+              terminalResizing,
+              setTerminalResizing,
+            }}
           />
         </div>
       )}

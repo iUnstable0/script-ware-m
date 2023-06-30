@@ -1,12 +1,15 @@
 // Packages
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { useRouter } from "next/navigation";
 
 import { invoke } from "@tauri-apps/api/tauri";
 
-import { useHotkeys } from "react-hotkeys-hook";
+// import { useHotkeys } from "react-hotkeys-hook";
+
+// import { Resizable } from "react-resizable";
+import { Resizable } from "re-resizable";
 
 import clsx from "clsx";
 
@@ -34,32 +37,50 @@ import type { Pages } from "@/types/pages";
 
 export default function Component({
   pageState,
-  terminalVisibleState,
-  editorVisibleState,
+  terminalState,
+  editorState,
 }: {
   pageState: {
     page: Pages;
     setPage: (page: Pages) => void;
   };
-  terminalVisibleState: {
+  terminalState: {
     terminalVisible: boolean;
     setTerminalVisible: (terminalVisible: boolean) => void;
+    terminalHeight: number;
+    setTerminalHeight: (terminalHeight: number) => void;
+    renderTerminalHeight: number;
+    setRenderTerminalHeight: (renderTerminalHeight: number) => void;
+    terminalResizing: boolean;
+    setTerminalResizing: (terminalResizing: boolean) => void;
   };
-  editorVisibleState: {
+  editorState: {
     editorVisible: boolean;
     setEditorVisible: (editorVisible: boolean) => void;
   };
 }): JSX.Element {
+  const router = useRouter();
+
   const [updateMaximized, setUpdateMaximized] = useState<boolean>(false),
     [maximized, setMaximized] = useState<boolean>(false);
+
+  const [innerHeight, setInnerHeight] = useState<number>(0),
+    [intervalRan, setIntervalRan] = useState<boolean>(false);
 
   const [reloadSpin, setReloadSpin] = useState<boolean>(false);
 
   const { page, setPage } = pageState,
-    { terminalVisible, setTerminalVisible } = terminalVisibleState,
-    { editorVisible, setEditorVisible } = editorVisibleState;
-
-  const router = useRouter();
+    {
+      terminalVisible,
+      setTerminalVisible,
+      terminalHeight,
+      setTerminalHeight,
+      renderTerminalHeight,
+      setRenderTerminalHeight,
+      terminalResizing,
+      setTerminalResizing,
+    } = terminalState,
+    { editorVisible, setEditorVisible } = editorState;
 
   // useHotkeys("*", async (_, handler: any) => {
   //   await invoke("log", {
@@ -72,6 +93,14 @@ export default function Component({
       setMaximized(await (await appWindow()).isMaximized());
     })();
   }, [updateMaximized]);
+
+  useEffect(() => {
+    if (intervalRan) return;
+
+    setIntervalRan(true);
+
+    setInterval(() => setInnerHeight(window.innerHeight), 1);
+  }, []);
 
   useEffect(() => {
     setUpdateMaximized(!updateMaximized);
@@ -344,15 +373,45 @@ export default function Component({
       {/*<AnimatePresence>*/}
       {/*  {terminalVisible && (*/}
 
-      <div
+      <Resizable
+        defaultSize={{
+          width: "100%",
+          height: 100,
+        }}
+        minHeight={100}
+        maxHeight={innerHeight - 100}
+        size={{ width: "100%", height: terminalHeight }}
+        onResizeStart={(e, direction, ref) => {
+          setTerminalResizing(true);
+        }}
+        onResize={(e, direction, ref, d) => {
+          // setTerminalHeight(terminalHeight + d.height);
+          // console.log(terminalHeight + d.height);
+          //
+          setRenderTerminalHeight(terminalHeight + d.height);
+        }}
+        onResizeStop={(e, direction, ref, d) => {
+          setTerminalHeight(terminalHeight + d.height);
+          setTerminalResizing(false);
+        }}
         className={frameStyles.terminal_container}
         style={{
+          // background: "red",
           opacity: page === "editor" ? (terminalVisible ? 1 : 0) : 0,
           zIndex: page === "editor" ? (terminalVisible ? 1 : -1) : -1,
         }}
       >
-        <div className={frameStyles.terminal}>Hi</div>
-      </div>
+        {/*<div*/}
+        {/*  className={frameStyles.terminal_container}*/}
+        {/*  style={{*/}
+        {/*    opacity: page === "editor" ? (terminalVisible ? 1 : 0) : 0,*/}
+        {/*    zIndex: page === "editor" ? (terminalVisible ? 1 : -1) : -1,*/}
+        {/*    height: `${terminalHeight}px`,*/}
+        {/*  }}*/}
+        {/*>*/}
+        <div className={frameStyles.terminal}></div>
+        {/*</div>*/}
+      </Resizable>
 
       {/*  )}*/}
       {/*</AnimatePresence>*/}
