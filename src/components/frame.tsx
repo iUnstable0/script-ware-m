@@ -37,12 +37,18 @@ import type { Pages } from "@/types/pages";
 
 export default function Component({
   pageState,
+  windowState,
   terminalState,
+  explorerState,
   editorState,
 }: {
   pageState: {
     page: Pages;
     setPage: (page: Pages) => void;
+  };
+  windowState: {
+    windowResizing: boolean;
+    setWindowResizing: (windowResizing: boolean) => void;
   };
   terminalState: {
     terminalVisible: boolean;
@@ -53,6 +59,16 @@ export default function Component({
     setRenderTerminalHeight: (renderTerminalHeight: number) => void;
     terminalResizing: boolean;
     setTerminalResizing: (terminalResizing: boolean) => void;
+  };
+  explorerState: {
+    explorerVisible: boolean;
+    setExplorerVisible: (explorerVisible: boolean) => void;
+    explorerWidth: number;
+    setExplorerWidth: (explorerWidth: number) => void;
+    renderExplorerWidth: number;
+    setRenderExplorerWidth: (renderExplorerWidth: number) => void;
+    explorerResizing: boolean;
+    setExplorerResizing: (explorerResizing: boolean) => void;
   };
   editorState: {
     editorVisible: boolean;
@@ -65,22 +81,44 @@ export default function Component({
     [maximized, setMaximized] = useState<boolean>(false);
 
   const [innerHeight, setInnerHeight] = useState<number>(0),
-    [intervalRan, setIntervalRan] = useState<boolean>(false);
+    [innerWidth, setInnerWidth] = useState<number>(0);
+
+  const [intervalRan, setIntervalRan] = useState<boolean>(false);
+
+  const [windowUpdate, setWindowUpdate] = useState<any>(""),
+    [checkWindow, setCheckWindow] = useState<any>("");
 
   const [reloadSpin, setReloadSpin] = useState<boolean>(false);
 
-  const { page, setPage } = pageState,
-    {
-      terminalVisible,
-      setTerminalVisible,
-      terminalHeight,
-      setTerminalHeight,
-      renderTerminalHeight,
-      setRenderTerminalHeight,
-      terminalResizing,
-      setTerminalResizing,
-    } = terminalState,
-    { editorVisible, setEditorVisible } = editorState;
+  const { page, setPage } = pageState;
+
+  const { windowResizing, setWindowResizing } = windowState;
+
+  const {
+    terminalVisible,
+    setTerminalVisible,
+    terminalHeight,
+    setTerminalHeight,
+    renderTerminalHeight,
+    setRenderTerminalHeight,
+    terminalResizing,
+    setTerminalResizing,
+  } = terminalState;
+
+  const {
+    explorerVisible,
+    setExplorerVisible,
+    explorerWidth,
+    setExplorerWidth,
+    renderExplorerWidth,
+    setRenderExplorerWidth,
+    explorerResizing,
+    setExplorerResizing,
+  } = explorerState;
+
+  const { editorVisible, setEditorVisible } = editorState;
+
+  // const parentRef = useRef<HTMLDivElement>(null);
 
   // useHotkeys("*", async (_, handler: any) => {
   //   await invoke("log", {
@@ -95,11 +133,76 @@ export default function Component({
   }, [updateMaximized]);
 
   useEffect(() => {
+    if (terminalHeight > innerHeight - 100) {
+      setTerminalHeight(innerHeight - 100);
+    } else if (terminalHeight < 100) {
+      setTerminalHeight(100);
+    }
+
+    if (explorerWidth > innerWidth - 450) {
+      setExplorerWidth(innerWidth - 450);
+    } else if (explorerWidth < 150) {
+      setExplorerWidth(150);
+    }
+  }, [innerHeight, innerWidth]);
+
+  useEffect(() => {
+    const params = checkWindow.split("_");
+
+    const oldInnerWidth = params[1],
+      oldInnerHeight = params[2];
+
+    if (
+      innerHeight == window.innerHeight &&
+      innerWidth == window.innerWidth &&
+      oldInnerWidth == window.innerWidth &&
+      oldInnerHeight == window.innerHeight &&
+      oldInnerWidth == innerWidth &&
+      oldInnerHeight == innerHeight
+    ) {
+      console.log("No longer resizing");
+      setWindowResizing(false);
+    }
+  }, [checkWindow]);
+
+  useEffect(() => {
+    let changed = false;
+
+    const newInnerHeight = window.innerHeight,
+      newInnerWidth = window.innerWidth;
+
+    if (newInnerHeight !== innerHeight) {
+      console.log("Height changed", newInnerHeight, innerHeight);
+      setInnerHeight(newInnerHeight);
+
+      changed = true;
+    }
+
+    if (newInnerWidth !== innerWidth) {
+      console.log("Width changed", newInnerWidth, innerWidth);
+      setInnerWidth(newInnerWidth);
+
+      changed = true;
+    }
+
+    if (changed) {
+      // console.log("Resized");
+      setWindowResizing(true);
+
+      setTimeout(() => {
+        setCheckWindow(`${Math.random()}_${newInnerWidth}_${newInnerHeight}`);
+      }, 500);
+    }
+  }, [windowUpdate]);
+
+  useEffect(() => {
     if (intervalRan) return;
 
     setIntervalRan(true);
 
-    setInterval(() => setInnerHeight(window.innerHeight), 1);
+    setInterval(() => {
+      setWindowUpdate(Math.random());
+    }, 1);
   }, []);
 
   useEffect(() => {
@@ -112,6 +215,9 @@ export default function Component({
       <div
         data-tauri-drag-region
         className={clsx(frameStyles.bar, frameStyles.topbar)}
+        style={{
+          zIndex: 3,
+        }}
         onClick={() => setUpdateMaximized(!updateMaximized)}
       >
         <div
@@ -275,7 +381,13 @@ export default function Component({
         </div>
       </div>
 
-      <div data-tauri-drag-region className={frameStyles.leftbar_container}>
+      <div
+        data-tauri-drag-region
+        className={clsx(
+          frameStyles.bar_container,
+          frameStyles.leftbar_container
+        )}
+      >
         <div
           data-tauri-drag-region
           className={clsx(frameStyles.bar, frameStyles.leftbar)}
@@ -303,8 +415,8 @@ export default function Component({
               onClick={() => setPage("home")}
             />
             <Image
-              src="assets/frame/folder.svg"
-              alt="Files"
+              src="assets/frame/editor.svg"
+              alt="Editor"
               width={24}
               height={24}
               className={clsx(
@@ -331,6 +443,41 @@ export default function Component({
           </div>
           <div>
             <AnimatePresence>
+              {page === "editor" && (
+                <motion.div
+                  key="toggle-explorer-visible-btn"
+                  initial={{
+                    opacity: 0,
+                    transform: "scale(0.8)",
+                  }}
+                  animate={{
+                    opacity: 1,
+                    transform: "scale(1)",
+                  }}
+                  exit={{
+                    opacity: 0,
+                    transform: "scale(0.8)",
+                  }}
+                  transition={{
+                    duration: 0.15,
+                  }}
+                >
+                  <Image
+                    src="assets/frame/folder.svg"
+                    alt="Explorer"
+                    width={24}
+                    height={24}
+                    className={clsx(
+                      frameStyles.leftbar_item,
+                      frameStyles.leftbar_item_bottom,
+                      explorerVisible && frameStyles.leftbar_item_active
+                    )}
+                    draggable={false}
+                    onClick={() => setExplorerVisible(!explorerVisible)}
+                  />
+                </motion.div>
+              )}
+
               {page === "editor" && (
                 <motion.div
                   key="toggle-terminal-visible-btn"
@@ -375,19 +522,55 @@ export default function Component({
 
       <Resizable
         defaultSize={{
+          width: 150,
+          height: "100%",
+        }}
+        minWidth={150}
+        maxWidth={innerWidth - 450}
+        // maxHeight={innerHeight - 100}
+        size={{
+          width: explorerWidth,
+          height: "100%",
+        }}
+        onResizeStart={(e, direction, ref) => {
+          setExplorerResizing(true);
+        }}
+        onResize={(e, direction, ref, d) => {
+          setRenderExplorerWidth(explorerWidth + d.width);
+        }}
+        onResizeStop={(e, direction, ref, d) => {
+          setExplorerWidth(explorerWidth + d.width);
+          setExplorerResizing(false);
+        }}
+        className={frameStyles.explorer_container}
+        style={{
+          opacity: page === "editor" ? (explorerVisible ? 1 : 0) : 0,
+          zIndex: page === "editor" ? (explorerVisible ? 2 : -1) : -1,
+        }}
+      >
+        <div className={frameStyles.explorer}></div>
+      </Resizable>
+
+      <Resizable
+        defaultSize={{
           width: "100%",
           height: 100,
         }}
         minHeight={100}
         maxHeight={innerHeight - 100}
-        size={{ width: "100%", height: terminalHeight }}
+        size={{
+          width: explorerVisible
+            ? `${
+                innerWidth -
+                ((explorerResizing ? renderExplorerWidth : explorerWidth) - 40)
+              }px`
+            : "100%",
+          height: terminalHeight,
+        }}
         onResizeStart={(e, direction, ref) => {
           setTerminalResizing(true);
         }}
         onResize={(e, direction, ref, d) => {
-          // setTerminalHeight(terminalHeight + d.height);
-          // console.log(terminalHeight + d.height);
-          //
           setRenderTerminalHeight(terminalHeight + d.height);
         }}
         onResizeStop={(e, direction, ref, d) => {
@@ -396,21 +579,23 @@ export default function Component({
         }}
         className={frameStyles.terminal_container}
         style={{
-          // background: "red",
           opacity: page === "editor" ? (terminalVisible ? 1 : 0) : 0,
           zIndex: page === "editor" ? (terminalVisible ? 1 : -1) : -1,
+          left: explorerVisible
+            ? `${
+                (explorerResizing ? renderExplorerWidth : explorerWidth) - 40
+              }px`
+            : "0px",
         }}
       >
-        {/*<div*/}
-        {/*  className={frameStyles.terminal_container}*/}
-        {/*  style={{*/}
-        {/*    opacity: page === "editor" ? (terminalVisible ? 1 : 0) : 0,*/}
-        {/*    zIndex: page === "editor" ? (terminalVisible ? 1 : -1) : -1,*/}
-        {/*    height: `${terminalHeight}px`,*/}
-        {/*  }}*/}
-        {/*>*/}
-        <div className={frameStyles.terminal}></div>
-        {/*</div>*/}
+        <motion.div
+          className={frameStyles.terminal}
+          layout
+          transition={{
+            duration: windowResizing ? 0 : explorerResizing ? 0 : 0.1,
+            // type: "spring",
+          }}
+        />
       </Resizable>
 
       {/*  )}*/}
@@ -419,6 +604,9 @@ export default function Component({
       <div
         data-tauri-drag-region
         className={clsx(frameStyles.bar, frameStyles.bottombar)}
+        style={{
+          zIndex: 3,
+        }}
       >
         <div></div>
         <div
@@ -451,7 +639,7 @@ export default function Component({
                   transition={{
                     duration: 0.15,
                   }}
-                  layout
+                  layout="position"
                 >
                   <Image
                     src="assets/frame/reload.svg"
@@ -488,7 +676,7 @@ export default function Component({
                 marginRight: "10px",
               }}
               transition={{ duration: 0.15 }}
-              layout
+              layout="position"
             >
               Not Injected
             </motion.div>

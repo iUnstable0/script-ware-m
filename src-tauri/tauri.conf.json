@@ -95,6 +95,8 @@
       {
         "height": 400,
         "width": 725,
+        "minHeight": 400,
+        "minWidth": 625,
         "center": true,
         "decorations": false,
         "transparent": true,

@@ -1,23 +1,55 @@
 .container {
+  //width: 100%;
+
+  position: relative;
+
+  //transition: width 0.25s;
+}
+
+.run_container {
+  width: 24px;
+  height: 24px;
+
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  padding: 6px;
+  margin: 0 8px 8px 0;
+
+  background: rgba(4, 19, 34, 0.7);
+
+  transition: background-color 0.25s, scale 0.25s;
+
+  scale: 0.9;
+
+  border-radius: 10px;
+
+  z-index: 1;
+}
+
+.run_container:hover {
+  scale: 1;
+  background: #1d2e3e;
+}
+
+.run_container:active {
+  scale: 0.95;
+  background: #1a2938;
+}
+
+.run {
+  transition: scale 0.25s;
+}
+
+.editor_container {
   width: 100%;
+  height: 100%;
 }
 
 .editor {
   width: 100%;
   height: 100%;
 
-
-  transition: height 0.1s;
-
-  //height: calc(100vh - 25px);
-
-  //box-sizing: border-box; /* Add this line */
-
-  //padding-bottom: 25px;
-
-  //padding: 35px 35px 25px 40px;
+  //transition: height 0.1s, width 0.1s;
 }
-
-//.editor_terminal {
-//  height: calc(100% - 75px) !important;
-//}

@@ -30,11 +30,18 @@ export default function Page() {
   const [page, setPage] = useState<Pages>("editor");
 
   const [terminalVisible, setTerminalVisible] = useState<boolean>(false),
+    [explorerVisible, setExplorerVisible] = useState<boolean>(false),
     [editorVisible, setEditorVisible] = useState<boolean>(true);
+
+  const [windowResizing, setWindowResizing] = useState<boolean>(false);
 
   const [terminalHeight, setTerminalHeight] = useState<number>(100),
     [renderTerminalHeight, setRenderTerminalHeight] = useState<number>(100),
     [terminalResizing, setTerminalResizing] = useState<boolean>(false);
+
+  const [explorerWidth, setExplorerWidth] = useState<number>(150),
+    [renderExplorerWidth, setRenderExplorerWidth] = useState<number>(150),
+    [explorerResizing, setExplorerResizing] = useState<boolean>(false);
 
   // const monacoRef = useRef(null);
 
@@ -138,6 +145,10 @@ export default function Page() {
           page,
           setPage,
         }}
+        windowState={{
+          windowResizing,
+          setWindowResizing,
+        }}
         terminalState={{
           terminalVisible,
           setTerminalVisible,
@@ -147,6 +158,16 @@ export default function Page() {
           setRenderTerminalHeight,
           terminalResizing,
           setTerminalResizing,
+        }}
+        explorerState={{
+          explorerVisible,
+          setExplorerVisible,
+          explorerWidth,
+          setExplorerWidth,
+          renderExplorerWidth,
+          setRenderExplorerWidth,
+          explorerResizing,
+          setExplorerResizing,
         }}
         editorState={{
           editorVisible,
@@ -172,6 +193,10 @@ export default function Page() {
           }}
         >
           <Editor
+            windowState={{
+              windowResizing,
+              setWindowResizing,
+            }}
             terminalState={{
               terminalVisible,
               setTerminalVisible,
@@ -181,6 +206,16 @@ export default function Page() {
               setRenderTerminalHeight,
               terminalResizing,
               setTerminalResizing,
+            }}
+            explorerState={{
+              explorerVisible,
+              setExplorerVisible,
+              explorerWidth,
+              setExplorerWidth,
+              renderExplorerWidth,
+              setRenderExplorerWidth,
+              explorerResizing,
+              setExplorerResizing,
             }}
           />
         </div>
