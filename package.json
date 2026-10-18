@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "tauri": "bunx @tauri-apps/cli@1.4.0",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

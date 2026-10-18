@@ -28,6 +28,12 @@ import { LoaderIcon } from "@/components/loader";
 import styles from "@/styles/index.module.scss";
 import bootstrapperStyles from "@/styles/bootstrapper.module.scss";
 
+// The original Script-Ware distribution endpoints are no longer available.
+// Keep the old bootstrapper available for archival/debugging purposes, but do
+// not make normal startup depend on remote binaries or version files.
+const legacyBootstrapEnabled =
+  process.env.NEXT_PUBLIC_ENABLE_LEGACY_BOOTSTRAP === "1";
+
 export default function Page() {
   const [debug, setDebug] = useState<string>("");
 
@@ -46,6 +52,14 @@ export default function Page() {
   };
 
   const init = () => {
+    if (!legacyBootstrapEnabled) {
+      console.info(
+        "Legacy dependency checks are disabled; continuing in offline UI mode."
+      );
+
+      return Promise.resolve(true);
+    }
+
     return new Promise(async (resolve, reject) => {
       try {
         // -------------------- libScriptWare.dylib -------------------- //
